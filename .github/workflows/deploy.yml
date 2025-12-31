@@ -47,7 +47,11 @@ jobs:
           echo "Checking build output..."
           ls -la dist/
           echo "---"
-          cat dist/index.html | grep -A 2 "script"
+          echo "Script tags in index.html:"
+          cat dist/index.html | grep -E "script.*src=" || echo "No script tags found"
+          echo "---"
+          echo "Checking for /src/index.tsx (should NOT exist):"
+          grep -q "/src/index.tsx" dist/index.html && echo "ERROR: /src/index.tsx found in dist!" || echo "OK: /src/index.tsx not found"
           echo "---"
           test -f dist/.nojekyll && echo ".nojekyll exists" || echo ".nojekyll missing"
           test -f dist/404.html && echo "404.html exists" || echo "404.html missing"
