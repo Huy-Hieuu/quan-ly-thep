@@ -42,8 +42,15 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Create .nojekyll file
-        run: touch dist/.nojekyll
+      - name: Verify build output
+        run: |
+          echo "Checking build output..."
+          ls -la dist/
+          echo "---"
+          cat dist/index.html | grep -A 2 "script"
+          echo "---"
+          test -f dist/.nojekyll && echo ".nojekyll exists" || echo ".nojekyll missing"
+          test -f dist/404.html && echo "404.html exists" || echo "404.html missing"
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
