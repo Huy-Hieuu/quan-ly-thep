@@ -7,12 +7,18 @@ const AIInsights: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchInsights = async () => {
-    setLoading(true);
-    // Mock data based on current state
-    const data = { stock: 1240, trends: "+2%", categories: { bar: 500, coil: 200 } };
-    const res = await getInventoryInsights(data);
-    setInsights(res);
-    setLoading(false);
+    try {
+      setLoading(true);
+      // Mock data based on current state
+      const data = { stock: 1240, trends: "+2%", categories: { bar: 500, coil: 200 } };
+      const res = await getInventoryInsights(data);
+      setInsights(Array.isArray(res) ? res : []);
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+      setInsights(["Không thể tải thông tin phân tích."]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
